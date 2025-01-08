@@ -5,6 +5,7 @@
     "main": "index.js",
     "type": "module",
     "scripts": {
+        "preinstall": "npm install",
         "dev": "vite",
         "build": "vite build",
         "serve": "vite preview",
