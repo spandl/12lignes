@@ -1,0 +1,73 @@
+body {
+    margin: 0;
+    font-family: 'Space Grotesk', sans-serif;
+    max-width: 100vw;
+    overflow-x: hidden;
+}
+
+#intro {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+#scroll-container {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    #scroll {
+        display: flex; /* Ensure horizontal layout */
+
+        #main {
+            min-width: 50vw;
+            width: 50vw;
+            background-color: rgba(201, 218, 230, 0.8);
+        }
+
+        .content-item {
+            height: 100vh; /* Optional: Full viewport height */
+            white-space: nowrap;
+        }
+    }
+}
+
+#credits {
+    > div {
+        padding: 150px 30px 0;
+    }
+    color: #ffffff;
+    background-color: black;
+}
+
+/* Fullscreen vertical sections */
+.section {
+    height: 100vh;
+    background-color: rgba(143, 126, 221, 0.1);
+}
+
+.centered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.sticky {
+    position: sticky;
+    top: 0;
+}
+
+.horizontal {
+    display: flex;
+    width: max-content;
+}
+
+.content-item {
+    padding: 150px 30px 0;
+}
+
+.content-item:nth-child(odd) {
+    background-color: #babcbe;
+}
+
+.content-item:nth-child(even) {
+    background-color: #e3e7e6;
+}

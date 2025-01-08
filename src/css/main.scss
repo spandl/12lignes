@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Itim&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Space+Grotesk:wght@300..700&display=swap');
+
+$primary-color: #3498db;
+
+#waveformCanvas {
+    border: 2px solid grey;
+    width: 800px;
+    height: 200px;
+}
+
+#audio-button {
+    cursor: pointer;
+    padding: 10px;
+    background: lightgray;
+    text-align: center;
+    width: 100px;
+    margin: 20px auto;
+}
+
+// Scrollbar Container
+#scrollbar-container {
+    position: relative;
+    height: 20px;
+    margin: 10px auto;
+    width: 100%;
+    max-width: 800px;
+}
+
+// Scrollbar Background
+#scrollbar {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: lightgray;
+    transform: translateY(-50%);
+}
+
+// Progress Bar
+#progress-bar {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 0; // This will be dynamically updated
+    height: 5px;
+    background: slategrey;
+    transform: translateY(-50%);
+}
+
+// Draggable Circle (Scroll Thumb)
+#scroll-thumb {
+    position: absolute;
+    top: 50%;
+    left: 0; // This will be dynamically updated
+    width: 12px;
+    height: 12px;
+    background: slategrey;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}

@@ -1,0 +1,5 @@
+node_modules
+dist
+decs.d.ts
+webpack*
+src/TellMe_phrases/src_viz/scripts/render/pre-compiled-templates

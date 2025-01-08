@@ -1,0 +1,1 @@
+declare module "@supermetrics/sm_dsv_shared"

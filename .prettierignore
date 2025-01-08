@@ -1,0 +1,2 @@
+# Ignore all files in Tools and Configurations directories under src
+src/Configurations/

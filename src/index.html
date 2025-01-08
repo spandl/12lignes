@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>12 lignes</title>
+</head>
+
+<body>
+
+    <div class="sticky section centered" id="intro">
+        <h1>12 lignes (0.10)</h1>
+        <div id="audio-button">
+            Play Audio
+        </div>
+        <canvas id="waveformCanvas"></canvas>
+        <div id="scrollbar-container">
+            <div id="scrollbar"></div>
+            <div id="progress-bar"></div>
+            <div id="scroll-thumb"></div>
+        </div>
+    </div>
+
+    <!-- Horizontal scrolling section -->
+    <div class="sticky section horizontal" id="scroll-container">
+        <div id="scroll">
+            <div class="content-item" id="main">
+                <span>by Claude Chaussard</span>
+            </div>
+            <!-- scrolled area -->
+            <div class="content-item">Some longer section</div>
+            <div class="content-item">A broken bottle behind a Pilsner, the Ipswich Ale, and the Christmas Ale related
+                to
+                the pit viper are what made America great! Indeed, a Brewers Reserve avoids contact with a keg. When you
+                see a surly burly freight train, it means that a burly Avery IPA reads a magazine. A bombed black
+                velvet brainwashes an almost tattered milwaukee's best. Indeed, a Luna Sea ESB gives lectures on
+                morality
+                to the Sierra Nevada Pale Ale.</div>
+            <div class="content-item">Item 3</div>
+            <div class="content-item">Item 4</div>
+            <div class="content-item" id="test">Item 5</div>
+        </div>
+    </div>
+
+    <div id="spacer"></div>
+
+    <div class="sticky section" id="credits">
+        <div>Credits and other stuff</div>
+    </div>
+
+
+    <script type="module" src="./js/entry.ts"></script>
+</body>
+
+</html>
