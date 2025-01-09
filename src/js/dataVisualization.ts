@@ -23,7 +23,7 @@ export function updateViz(timeDomainArray: Float32Array) {
         const x = i;
         const yMin = (min + 1) * amp;  // Mapping the range [-1, 1] to [0, height]
         const yMax = (max + 1) * amp;
-        console.log('hello', yMin, yMax)
+        console.log('drawing', yMin, yMax)
         ctx.moveTo(x, yMin);
         ctx.lineTo(x, yMax);
     }

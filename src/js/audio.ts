@@ -2,9 +2,23 @@
 import { setupAudioAnalyser, getAudioDataPoint, AudioDataPoint } from "./audioData";
 import { updateViz } from './dataVisualization';
 
+/* 
+TODO
+* https://codepen.io/craigstroman/pen/aOyRYx
+* Add source into HTML
+*/
+
 document.addEventListener('DOMContentLoaded', () => {
     // Create an Audio object and load the file
-    const audioElement = new Audio('./audio/12-lignes.mp3');
+    const audioElement = new Audio();
+
+    // Setup the audio analyser once the user clicks for the first time
+    let audioAnalyserSetup: ReturnType<typeof setupAudioAnalyser> | null = null;
+
+    const audioURL = new URL('/audio/12-lignes.mp3', import.meta.url).href;
+    console.log(audioURL)
+
+    audioElement.setAttribute("src", audioURL);
     audioElement.preload = 'auto';
     audioElement.load();
 
@@ -12,24 +26,22 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Audio is buffering, please wait...');
     });
 
-
-
-
+    audioElement.addEventListener("ended", () => {
+        console.log('track has ended')
+    }, false);
 
     const playButton = document.getElementById("audio-button")!;
     const scrollbar = document.getElementById("scrollbar")!;
     const progressBar = document.getElementById("progress-bar")!;
     const scrollThumb = document.getElementById("scroll-thumb")!;
 
-    console.log('audioElement', audioElement)
-
     // initViz();  // Initializes the canvas
 
     let isDragging = false;
     let isPlaying = false;
 
-    // Setup the audio analyser and the arrays to hold time-domain and frequency data
-    const { analyser, timeDomainArray, frequencyArray } = setupAudioAnalyser(audioElement);
+
+
 
     // Update scrollbar and thumb position based on the audio's current time
     function updateScrollbar() {
@@ -56,17 +68,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Play/pause functionality
     playButton.addEventListener("click", () => {
+        if (!audioAnalyserSetup) {
+            audioAnalyserSetup = setupAudioAnalyser(audioElement);
+        }
         if (!isPlaying) {
-            audioElement.preload = 'auto';
-            audioElement.load();
-            audioElement.addEventListener('loadeddata', () => {
-                console.log('Audio is fully loaded and ready to play');
-                audioElement.play().catch((error) => {
-                    console.error('Playback failed:', error);
-                });
-                isPlaying = true;
-                playButton.textContent = "Pause Audio"; // Change button text to "Pause"
-            });
+            audioElement.play();
+            isPlaying = true;
+            playButton.textContent = "Pause Audio"; // Change button text to "Pause"
+
         } else {
             audioElement.pause();
             isPlaying = false;
@@ -77,19 +86,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // Sync scrollbar with audio playback
     audioElement.addEventListener("timeupdate", () => {
         updateScrollbar();
-
-        // Get audio data (time-domain, frequency, loudness) at the current time
-        // const audioData: AudioDataPoint = getAudioDataPoint(
-        //     analyser,
-        //     timeDomainArray,
-        //     frequencyArray,
-        //     audioElement
-        // );
-        // const { time, loudness, frequencyDomain, timeDomain } = audioData;
-        // const timeArray = normalizedTimeDomainArray(timeDomain);
-        // updateViz(timeArray);
-
-        console.log('timeupdate', audioElement)
+        if (audioAnalyserSetup) {
+            const { analyser, timeDomainArray, frequencyArray } = audioAnalyserSetup;
+            // Get audio data (time-domain, frequency, loudness) at the current time
+            const audioData: AudioDataPoint = getAudioDataPoint(
+                analyser,
+                timeDomainArray,
+                frequencyArray,
+                audioElement
+            );
+            const { time, loudness, frequencyDomain, timeDomain } = audioData;
+            const timeArray = normalizedTimeDomainArray(timeDomain);
+            updateViz(timeArray);
+            const currentTime = audioElement.currentTime;
+            console.log('timeupdate', currentTime)
+        }
 
     });
 

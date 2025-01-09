@@ -39,6 +39,6 @@ export function getAudioDataPoint(
         time: audioElement.currentTime,
         timeDomain: Uint8Array.from(timeDomainArray),
         frequencyDomain: Uint8Array.from(frequencyArray),
-        loudness: loudness,
+        loudness,
     };
 }
