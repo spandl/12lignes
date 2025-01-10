@@ -1,22 +1,12 @@
-// audio.ts
 import { setupAudioAnalyser, getAudioDataPoint, AudioDataPoint } from "./audioData";
-import { updateViz } from './dataVisualization';
-
-/* 
-TODO
-* https://codepen.io/craigstroman/pen/aOyRYx
-* Add source into HTML
-*/
+import { initViz, updateViz } from './dataVisualization';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Create an Audio object and load the file
-    const audioElement = new Audio();
-
     // Setup the audio analyser once the user clicks for the first time
     let audioAnalyserSetup: ReturnType<typeof setupAudioAnalyser> | null = null;
 
+    const audioElement = new Audio();
     const audioURL = new URL('/audio/12-lignes.mp3', import.meta.url).href;
-    console.log(audioURL)
 
     audioElement.setAttribute("src", audioURL);
     audioElement.preload = 'auto';
@@ -35,13 +25,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const progressBar = document.getElementById("progress-bar")!;
     const scrollThumb = document.getElementById("scroll-thumb")!;
 
-    // initViz();  // Initializes the canvas
+    initViz();  // Initializes the canvas
 
     let isDragging = false;
     let isPlaying = false;
-
-
-
 
     // Update scrollbar and thumb position based on the audio's current time
     function updateScrollbar() {
@@ -83,10 +70,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Sync scrollbar with audio playback
-    audioElement.addEventListener("timeupdate", () => {
-        updateScrollbar();
-        if (audioAnalyserSetup) {
+    // Control the frequency of updates with requestAnimationFrame
+    let lastUpdate = 0;
+    const updateFrequency = 5;
+    const visualizationUpdate = (timestamp) => {
+        const diff = Math.round(timestamp - lastUpdate)
+
+        if (audioAnalyserSetup && isPlaying && diff > updateFrequency) {
             const { analyser, timeDomainArray, frequencyArray } = audioAnalyserSetup;
             // Get audio data (time-domain, frequency, loudness) at the current time
             const audioData: AudioDataPoint = getAudioDataPoint(
@@ -95,12 +85,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 frequencyArray,
                 audioElement
             );
+
             const { time, loudness, frequencyDomain, timeDomain } = audioData;
-            const timeArray = normalizedTimeDomainArray(timeDomain);
-            updateViz(timeArray);
-            const currentTime = audioElement.currentTime;
-            console.log('timeupdate', currentTime)
+            updateViz(audioElement.currentTime, timeDomain);
+
+            lastUpdate = timestamp;
         }
+
+        requestAnimationFrame(visualizationUpdate);
+    };
+
+    requestAnimationFrame(visualizationUpdate);
+
+    // Sync scrollbar with audio playback
+    audioElement.addEventListener("timeupdate", () => {
+        updateScrollbar();
+        // const currentTime = audioElement.currentTime;
+        // console.log('timeupdate', currentTime)
+
+
+
 
     });
 

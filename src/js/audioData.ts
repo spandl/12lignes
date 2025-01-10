@@ -11,7 +11,8 @@ export function setupAudioAnalyser(audioElement: HTMLAudioElement) {
     const audioSource = audioContext.createMediaElementSource(audioElement);
     const analyser = audioContext.createAnalyser();
 
-    analyser.fftSize = 2048;
+    analyser.fftSize = 2048// 2048;
+    analyser.smoothingTimeConstant = 0.3;
     audioSource.connect(analyser);
     analyser.connect(audioContext.destination);
 
@@ -35,10 +36,13 @@ export function getAudioDataPoint(
     );
     const loudness = (rms / 128) * 100;
 
+    const timeDomain = Uint8Array.from(timeDomainArray);
+    const frequencyDomain = Uint8Array.from(frequencyArray);
+
     return {
         time: audioElement.currentTime,
-        timeDomain: Uint8Array.from(timeDomainArray),
-        frequencyDomain: Uint8Array.from(frequencyArray),
+        timeDomain,
+        frequencyDomain,
         loudness,
     };
 }
