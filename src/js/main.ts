@@ -1,8 +1,8 @@
 import Lenis from 'lenis';
 
 import 'lenis/dist/lenis.css';
-import '../css/main.scss';
-import '../css/lenis.scss';
+import '../css/audio.scss';
+import '../css/structure.scss';
 
 console.log('Hello Claude');
 
@@ -34,7 +34,7 @@ const initSizes = () => {
         return total + contentItem.offsetWidth;
     }, 0);
     const verticalExtraSpace = horizontalScrollSectionWidth - screenWidth;
-    console.log('verticalExtraSpace', verticalExtraSpace);
+    // console.log('verticalExtraSpace', verticalExtraSpace);
 
     const spacer = document.querySelector('#spacer') as HTMLElement | null;
     if (spacer) spacer.style.height = `${verticalExtraSpace}px`;
@@ -53,8 +53,8 @@ const handleVirtualScroll = (e: any, speed: number) => {
 TODO > horizontal scroll
 
 * Add real text
-* Add audio player
-* Add canvas for visual animation
+* Fixed position for audio player
+* Overlay canvas for visual animation
 * Design
 * Fine-tune transition between horizontal and vertical scrolling
 */
@@ -79,12 +79,12 @@ lenis.on('scroll', (e) => {
     // Check if we're vertically within the horizontal scrolling section
 
     if (scroll >= sectionTop && scroll < sectionBottom - 500 && !horizontalScrollActive) {
-        horizontalScrollActive = true;
-        console.log("enter horizontal scrolling", Math.round(scroll));
+        // horizontalScrollActive = true;
+        // console.log("enter horizontal scrolling", Math.round(scroll));
 
     } else if ((scroll < sectionTop || scroll >= sectionBottom) && horizontalScrollActive) {
         horizontalScrollActive = false;
-        console.log("exit horizontal scrolling");
+        // console.log("exit horizontal scrolling");
     }
 
     //     console.log('horizontalScrollActive', horizontalScrollActive)
@@ -95,7 +95,7 @@ lenis.on('scroll', (e) => {
         const scrollWidth = containerWidth - screenWidth
         const diff = sectionBottom - creditSectionTop;
         const xPos = -(scrollWidth + diff)
-        console.log('offset', xPos, containerWidth, diff);
+        // console.log('offset', xPos, containerWidth, diff);
         // console.log('progress', lenis.progress);
         scrollContainer.style.transform = `translate(${xPos}px)`;
 

@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Itim&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Space+Grotesk:wght@300..700&display=swap');
+
+$primary-color: #3498db;
+
+/* Audio Visualization Overlay */
+#audio-visualization {
+    position: fixed; /* Fixed to cover the entire viewport */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Full viewport width */
+    height: 100vh; /* Full viewport height */
+    z-index: 9998; /* Slightly below sticky elements like the play button */
+    pointer-events: none; /* Ensure it doesn't block user interaction */
+}
+
+// SVG play button
+#audio-button {
+    position: sticky;
+    top: 20px;
+    z-index: 9999; /* Ensure it is above the overlay */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 5px;
+    text-align: center;
+    width: 60px;
+    height: 60px;
+    margin: 15px auto;
+
+    cursor: pointer;
+    border-radius: 50%;
+    background-color: slategray;
+    user-select: none;
+    transition: background-color 0.3s ease;
+}
+
+#audio-button:hover {
+    background-color: darkslategray; /* Darker shade on hover */
+}
+
+.icon {
+    width: 30px;
+    height: 30px;
+    fill: white;
+}
+
+.hidden {
+    display: none; /* Hide inactive icon */
+}
+
+// Scrollbar Container
+#scrollbar-container {
+    position: sticky;
+    top: 0;
+    height: 10px;
+    width: 100%;
+    background: lightgray;
+    cursor: pointer;
+    z-index: 10000; /* Above most elements, but below the play button */
+}
+
+// Scrollbar Background
+#scrollbar {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    transform: translateY(-50%);
+}
+
+// Progress Bar
+#progress-bar {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 0; // This will be dynamically updated
+    height: 10px;
+    background: slategrey;
+    transform: translateY(-50%);
+}
+
+// Draggable Circle (Scroll Thumb)
+#scroll-thumb {
+    position: absolute;
+    top: 50%;
+    left: 10; // This will be dynamically updated
+    width: 10px;
+    height: 10px;
+    background: transparent;
+    transform: translateY(-50%);
+    cursor: ew-resize; /* <-> cursor for dragging */
+    pointer-events: auto; /* Ensure it's interactive */
+}

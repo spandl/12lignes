@@ -21,11 +21,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }, false);
 
     const playButton = document.getElementById("audio-button")!;
+    const playIcon = document.getElementById("play-icon");
+    const pauseIcon = document.getElementById("pause-icon");
+
     const scrollbar = document.getElementById("scrollbar")!;
     const progressBar = document.getElementById("progress-bar")!;
     const scrollThumb = document.getElementById("scroll-thumb")!;
 
-    initViz();  // Initializes the canvas
+    const audioVisualization = document.getElementById("audio-visualization")!;
+
+    initViz(audioVisualization);  // Initializes the canvas
 
     let isDragging = false;
     let isPlaying = false;
@@ -61,14 +66,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isPlaying) {
             audioElement.play();
             isPlaying = true;
-            playButton.textContent = "Pause Audio"; // Change button text to "Pause"
+            playIcon.classList.add("hidden");
+            pauseIcon.classList.remove("hidden");
 
         } else {
             audioElement.pause();
             isPlaying = false;
-            playButton.textContent = "Play Audio"; // Change button text to "Play"
+            playIcon.classList.remove("hidden");
+            pauseIcon.classList.add("hidden");
         }
     });
+
 
     // Control the frequency of updates with requestAnimationFrame
     let lastUpdate = 0;
@@ -87,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
             );
 
             const { time, loudness, frequencyDomain, timeDomain } = audioData;
-            updateViz(audioElement.currentTime, timeDomain);
+            updateViz(audioVisualization, audioElement.currentTime, timeDomain);
 
             lastUpdate = timestamp;
         }
