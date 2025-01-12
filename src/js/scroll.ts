@@ -1,4 +1,5 @@
 import Lenis from 'lenis';
+import throttle from 'lodash/throttle';
 
 import 'lenis/dist/lenis.css';
 import '../css/audio.scss';
@@ -15,6 +16,7 @@ const lenis = new Lenis({
     // virtualScroll: (e) => handleVirtualScroll(e, scrollSpeed),
 });
 
+const introSection = document.querySelector('#intro') as HTMLElement | null;
 const horizontalScrollSection = document.querySelector('#scroll-container') as HTMLElement | null;
 const scrollContainer = document.querySelector('#scroll') as HTMLElement | null;
 const creditSection = document.querySelector('#credits') as HTMLElement | null;
@@ -49,58 +51,49 @@ const handleVirtualScroll = (e: any, speed: number) => {
     return true; // Allow the scroll to be smoothed
 }
 
-/*
-TODO > horizontal scroll
 
-* Add real text
-* Fixed position for audio player
-* Overlay canvas for visual animation
-* Design
-* Fine-tune transition between horizontal and vertical scrolling
-*/
+lenis.on(
+    'scroll',
+    throttle((e) => {
+
+        const { scroll } = e;
+        if (!horizontalScrollSection) return;
+
+        const sectionTop = horizontalScrollSection.offsetTop;
+        const sectionBottom = sectionTop + horizontalScrollSection.offsetHeight;
+
+        // Check if we're vertically within the horizontal scrolling section
+        if (scroll >= sectionTop && scroll < sectionBottom - 500 && !horizontalScrollActive) {
+            horizontalScrollActive = true;
+
+        } else if ((scroll < sectionTop || scroll >= sectionBottom) && horizontalScrollActive) {
+            horizontalScrollActive = false;
+        }
 
 
+        if (horizontalScrollActive) {
+            const lenis = Math.round(scroll);
+            const introHeight = introSection.offsetHeight;
+            const xPos = -1 * (lenis - introHeight);
+            updateHorizontalScroll(xPos);
+
+        }
+    }, 16)
+);
 
 
+let animationFrameId: number | null = null;
 
-lenis.on('scroll', (e) => {
+const updateHorizontalScroll = (xPos: number) => {
+    if (animationFrameId) return;
 
-    const { scroll } = e;
-
-    // console.log(`Scroll position: ${Math.round(scroll)}`);
-    if (!horizontalScrollSection) return;
-
-    const sectionTop = horizontalScrollSection.offsetTop;
-    const sectionBottom = sectionTop + horizontalScrollSection.offsetHeight;
-    const creditSectionTop = creditSection.offsetTop;
-
-    const containerWidth = horizontalScrollSection.scrollWidth;
-
-    // Check if we're vertically within the horizontal scrolling section
-
-    if (scroll >= sectionTop && scroll < sectionBottom - 500 && !horizontalScrollActive) {
-        // horizontalScrollActive = true;
-        // console.log("enter horizontal scrolling", Math.round(scroll));
-
-    } else if ((scroll < sectionTop || scroll >= sectionBottom) && horizontalScrollActive) {
-        horizontalScrollActive = false;
-        // console.log("exit horizontal scrolling");
-    }
-
-    //     console.log('horizontalScrollActive', horizontalScrollActive)
-
-    if (horizontalScrollActive) {
-
-        const screenWidth = window.innerWidth;
-        const scrollWidth = containerWidth - screenWidth
-        const diff = sectionBottom - creditSectionTop;
-        const xPos = -(scrollWidth + diff)
-        // console.log('offset', xPos, containerWidth, diff);
-        // console.log('progress', lenis.progress);
+    // animationFrameId = requestAnimationFrame(() => {
+    if (scrollContainer) {
         scrollContainer.style.transform = `translate(${xPos}px)`;
-
     }
-});
+    //     animationFrameId = null;
+    // });
+};
 
 
 

@@ -1,2 +1,2 @@
-import './main';
+import './scroll';
 import './audio';
