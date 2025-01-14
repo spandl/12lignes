@@ -1,22 +1,25 @@
 @use './variables';
 @import url('https://fonts.googleapis.com/css2?family=Itim&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Space+Grotesk:wght@300..700&display=swap');
 
-/* Audio Visualization Overlay */
-#audio-visualization {
-    position: fixed; /* Fixed to cover the entire viewport */
-    top: 0;
+#audio-container {
+    position: sticky;
     left: 0;
-    width: 100vw; /* Full viewport width */
-    height: 100vh; /* Full viewport height */
-    z-index: 9998; /* Slightly below sticky elements like the play button */
-    pointer-events: none; /* Ensure it doesn't block user interaction */
+    top: 0;
+    margin-top: variables.$audioPosition;
+    z-index: 100; /* Ensure it's always on top */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Horizontally center */
+    height: variables.$audioHeight;
+    background: none;
 }
 
 // SVG play button
 #audio-button {
     position: sticky;
-    top: 20px;
-    z-index: 9999; /* Ensure it is above the overlay */
+    // top: 20px;
+    z-index: 9000; /* Ensure it is above the overlay */
 
     display: flex;
     justify-content: center;
@@ -26,7 +29,7 @@
     text-align: center;
     width: 60px;
     height: 60px;
-    margin: 15px auto;
+    margin: 5px auto;
 
     cursor: pointer;
     border-radius: 50%;
@@ -53,12 +56,12 @@
 
 // Scrollbar Container
 #scrollbar-container {
-    position: sticky;
-    top: 0;
+    position: relative;
+    top: -30px;
     height: 10px;
     width: 100%;
     cursor: pointer;
-    z-index: 10000; /* Above most elements, but below the play button */
+    z-index: 1000; /* Above most elements, but below the play button */
 }
 
 // Scrollbar Background
@@ -66,8 +69,8 @@
     position: absolute;
     top: 50%;
     left: 0;
-    background: white;
-    opacity: 0.075;
+    background: #ccc;
+    opacity: 0.15;
     width: 100%;
     height: 10px;
     transform: translateY(-50%);
@@ -96,4 +99,15 @@
     transform: translateY(-50%);
     cursor: ew-resize; /* <-> cursor for dragging */
     pointer-events: auto; /* Ensure it's interactive */
+}
+
+/* Audio Visualization Overlay */
+#audio-visualization {
+    position: fixed; /* Fixed to cover the entire viewport */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Full viewport width */
+    height: 100vh; /* Full viewport height */
+    z-index: 5; /* Slightly below sticky elements like the play button */
+    pointer-events: none; /* Ensure it doesn't block user interaction */
 }

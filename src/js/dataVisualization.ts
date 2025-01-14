@@ -19,6 +19,7 @@ TODO > minor updates
 * resize event listener
 * Change color from outside
 * Remove empty bin at bottom
+* Performance
 */
 
 const NUM_LINES = 20; // Number of lines

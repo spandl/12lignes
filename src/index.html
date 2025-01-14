@@ -8,11 +8,12 @@
 </head>
 
 <body>
-
-    <div class="section centered" id="intro">
-        <h1>12 lignes (0.42)</h1>
-
-        <div id="audio-visualization"></div>
+    <div id="audio-container">
+        <div id="scrollbar-container">
+            <div id="scrollbar"></div>
+            <div id="progress-bar"></div>
+            <div id="scroll-thumb"></div>
+        </div>
         <div id="audio-button">
             <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon">
                 <polygon points="5,3 19,12 5,21" fill="white"></polygon>
@@ -22,21 +23,24 @@
                 <rect x="14" y="4" width="4" height="16" fill="white"></rect>
             </svg>
         </div>
-        <div id="scrollbar-container">
-            <div id="scrollbar"></div>
-            <div id="progress-bar"></div>
-            <div id="scroll-thumb"></div>
-        </div>
+
+    </div>
+
+    <div class="section" id="intro">
+        <h1>12 lignes (0.44)</h1>
+
+
+        <div id="audio-visualization"></div>
+
         <!-- 
     <h3>To do</h3>
     <ul>
         <li>
             Layout & animation
             <ul>
-                
                 <li>Clicking on progress bar advances sound</li>
-                <li>Keep scrollbar is fixed on top (use js to change class)</li>
-                <li>Scrolling performance on iPad after images are added</li>
+                <li>Keep scrollbar is fixed on top >> clicking not possible anymore with two fixed layers (read menu tutorials)</li>
+                <li>Clean refresh and cache</li>
             </ul>
         </li>
         <li>Prepare design of pages
