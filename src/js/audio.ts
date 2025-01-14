@@ -94,8 +94,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 audioElement
             );
 
-            const { time, loudness, frequencyDomain, timeDomain } = audioData;
-            updateViz(audioVisualization, audioElement.currentTime, timeDomain);
+            const { loudness, timeDomain } = audioData; // time, frequencyDomain
+            updateViz(audioVisualization, { loudness, timeDomain });
 
             lastUpdate = timestamp;
         }
