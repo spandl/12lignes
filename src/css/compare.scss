@@ -54,22 +54,19 @@ body {
     user-select: none;
 
     #scroll-container {
-        display: flex;
+        display: flex; /* Ensure horizontal layout */
+        will-change: transform;
+        transform: translateX(0); /* Initial position */
+        transition: transform 0.1s ease-out; /* Smooth movement (optional) */
 
-        .content-item {
-            padding: 150px 30px 0;
-            height: 100vh; /* Optional: Full viewport height */
-            white-space: nowrap;
+        #main {
+            min-width: 50vw;
+            width: 50vw;
         }
 
-        .instruments {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between; // Spreads items evenly with equal spacing
-            align-items: flex-start; // Aligns words to the left
-            min-width: 90vw;
-            position: relative; // To position pseudo-elements inside
-            padding-left: 1rem;
+        .content-item {
+            height: 100vh; /* Optional: Full viewport height */
+            white-space: nowrap;
         }
     }
 }
@@ -112,12 +109,13 @@ body {
     position: relative; /* Needed for sticky */
 }
 
-.sticky {
-    position: sticky;
-    top: 0;
+.centered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
-.horizontal {
-    display: flex;
-    width: max-content;
+.content-item {
+    padding: 50px 30px 0;
 }
