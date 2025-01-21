@@ -9,54 +9,33 @@
 
 <body>
     <div id="audio-container">
+        <div id="audio-button">
+            <svg id="pause-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon hidden">
+                <rect x="6" y="4" width="4" height="16" fill="white"></rect>
+                <rect x="14" y="4" width="4" height="16" fill="white"></rect>
+            </svg>
+            <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon">
+                <polygon points="5,3 19,12 5,21" fill="white"></polygon>
+            </svg>
+        </div>
+
         <div id="scrollbar-container">
             <div id="scrollbar"></div>
             <div id="progress-bar"></div>
             <div id="scroll-thumb"></div>
         </div>
-        <div id="audio-button">
-            <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon">
-                <polygon points="5,3 19,12 5,21" fill="white"></polygon>
-            </svg>
-            <svg id="pause-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon hidden">
-                <rect x="6" y="4" width="4" height="16" fill="white"></rect>
-                <rect x="14" y="4" width="4" height="16" fill="white"></rect>
-            </svg>
-        </div>
-
     </div>
 
     <div class="section" id="intro">
-        <h1>12 lignes (0.44)</h1>
-
-
+        <h1><span class="douze">12</span> lignes
+            <span class="portrait">Portrait de Claude Chaussard</span>
+        </h1>
         <div id="audio-visualization"></div>
-
-        <!-- 
-    <h3>To do</h3>
-    <ul>
-        <li>
-            Layout & animation
-            <ul>
-                <li>Clicking on progress bar advances sound</li>
-                <li>Keep scrollbar is fixed on top >> clicking not possible anymore with two fixed layers (read menu tutorials)</li>
-                <li>Clean refresh and cache</li>
-            </ul>
-        </li>
-        <li>Prepare design of pages
-            <ul>
-                <li>Place artwork in Figma</li>
-                <li>Add 12 lines with instruments</li>
-                <li>Animate elements with parallax scrolling</li>
-            </ul>
-        </li>
-    </ul>
-    -->
     </div>
 
     <!-- Horizontal scrolling section -->
-    <div class="sticky section horizontal" id="scroll-container">
-        <div id="scroll">
+    <div class="sticky section horizontal" id="horizontal-container">
+        <div id="scroll-container">
             <div class="content-item" id="main">
                 <span>by Claude Chaussard</span>
             </div>
@@ -74,10 +53,19 @@
         </div>
     </div>
 
-    <div id="spacer"></div>
-
     <div class="sticky section" id="credits">
-        <div>Credits and other stuff</div>
+        <div class="container">
+            <div>prise de son, montage et mixage
+                <span>Frédéric Le Bel</span>
+            </div>
+
+            <div>crédit photographique
+                <span>Alain Beauchesne</span>
+            </div>
+            <div class="r42">concept visuel
+                <span><a href="https://r42.ca" target="_blank">r42</a></span>
+            </div>
+        </div>
     </div>
 
     <script type="module" src="./js/entry.ts"></script>

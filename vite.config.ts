@@ -10,6 +10,7 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 main: './src/index.html',
+                test: './src/scroll-test.html',
             },
             output: {
                 assetFileNames: 'css/[name][extname]', // .[hash] Output CSS in /css directory

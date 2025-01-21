@@ -1,104 +1,79 @@
-import Lenis from 'lenis';
-import throttle from 'lodash/throttle';
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
 
-import 'lenis/dist/lenis.css';
 import '../css/audio.scss';
 import '../css/structure.scss';
 
-console.log('Hello Claude');
-
-// Initialize Lenis (vertical scrolling only)
-let scrollSpeed = 1; // Initial speed value
-const lenis = new Lenis({
-    autoRaf: true,
-    smoothWheel: true,
-    orientation: 'vertical',
-    // virtualScroll: (e) => handleVirtualScroll(e, scrollSpeed),
-});
-
-const introSection = document.querySelector('#intro') as HTMLElement | null;
-const horizontalScrollSection = document.querySelector('#scroll-container') as HTMLElement | null;
-const scrollContainer = document.querySelector('#scroll') as HTMLElement | null;
-const creditSection = document.querySelector('#credits') as HTMLElement | null;
-
-if (!horizontalScrollSection || !creditSection) {
-    console.error('Horizontal scroll section or closing section not found');
-}
-
-let horizontalScrollActive = false;
-
-const initSizes = () => {
-    const screenWidth = window.innerWidth;
-    const contentItems = document.querySelectorAll('.content-item');
-
-    const horizontalScrollSectionWidth = Array.from(contentItems).reduce((total, item) => {
-        const contentItem = item as HTMLElement;
-        return total + contentItem.offsetWidth;
-    }, 0);
-    const verticalExtraSpace = horizontalScrollSectionWidth - screenWidth;
-    // console.log('verticalExtraSpace', verticalExtraSpace);
-
-    const spacer = document.querySelector('#spacer') as HTMLElement | null;
-    if (spacer) spacer.style.height = `${verticalExtraSpace}px`;
-}
+gsap.registerPlugin(ScrollTrigger);
 
 
+const initScroll = () => {
+    const section = document.querySelector('#horizontal-container') as HTMLElement;
+    const container = document.querySelector('#scroll-container') as HTMLElement;
 
-const handleVirtualScroll = (e: any, speed: number) => {
-    if (horizontalScrollActive) {
-        e.deltaY /= speed; // Slow down vertical scroll by dividing deltaY
-    }
-    return true; // Allow the scroll to be smoothed
-}
+    const sectionWidth = section.offsetWidth;
+    const containerWidth = container.offsetWidth;
 
+    const sections = gsap.utils.toArray(".content-item");
 
-lenis.on(
-    'scroll',
-    throttle((e) => {
-
-        const { scroll } = e;
-        if (!horizontalScrollSection) return;
-
-        const sectionTop = horizontalScrollSection.offsetTop;
-        const sectionBottom = sectionTop + horizontalScrollSection.offsetHeight;
-
-        // Check if we're vertically within the horizontal scrolling section
-        if (scroll >= sectionTop && scroll < sectionBottom - 500 && !horizontalScrollActive) {
-            horizontalScrollActive = true;
-
-        } else if ((scroll < sectionTop || scroll >= sectionBottom) && horizontalScrollActive) {
-            horizontalScrollActive = false;
+    let scrollTween = gsap.to(sections, {
+        x: -(containerWidth - sectionWidth),
+        ease: "none",
+        scrollTrigger: {
+            trigger: "#horizontal-container",
+            pin: true,
+            scrub: 0.5,
+            end: `+=${containerWidth}`,
+            // markers: true,
         }
+    });
 
+    // Image parallax
 
-        if (horizontalScrollActive) {
-            const lenis = Math.round(scroll);
-            const introHeight = introSection.offsetHeight;
-            const xPos = -1 * (lenis - introHeight);
-            updateHorizontalScroll(xPos);
+    // gsap.set(".image", { x: 500 });
 
-        }
-    }, 16)
-);
-
-
-let animationFrameId: number | null = null;
-
-const updateHorizontalScroll = (xPos: number) => {
-    if (animationFrameId) return;
-
-    // animationFrameId = requestAnimationFrame(() => {
-    if (scrollContainer) {
-        scrollContainer.style.transform = `translate(${xPos}px)`;
-    }
-    //     animationFrameId = null;
+    // // Parallax animation for the image (faster than the scrollTween)
+    // sections.forEach((panel: HTMLElement) => {
+    //     const image = panel.querySelector(".image");
+    //     if (image) {
+    //         gsap.to(image, {
+    //             x: -10, // Adjust this value to control the parallax speed
+    //             ease: "easeInOut",
+    //             scrollTrigger: {
+    //                 trigger: panel,
+    //                 containerAnimation: scrollTween,
+    //                 scrub: true,
+    //                 start: "left center",
+    //                 end: "right center",
+    //                 id: `parallax-${panel.classList[0]}`,
+    //                 markers: true,
+    //             },
+    //         });
+    //     }
     // });
-};
+
+    gsap.to("#scrollbar-container", {
+        scrollTrigger: {
+            trigger: "#audio-container",
+            start: "top top",
+            onEnter: () => gsap.to("#scrollbar-container", { position: "fixed", top: 0, duration: 0.5 }),
+            onLeaveBack: () => gsap.to("#scrollbar-container", {
+                position: "absolute",
+                top: 130,
+                duration: 0.25
+            }),
+        },
+    });
+}
+
+
+
+
+
 
 
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    initSizes();
-    lenis.start();
+    initScroll();
 });
