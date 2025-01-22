@@ -15,8 +15,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100vh; /* Full viewport height */
-    // text-align: center;
+    height: 100vh;
 
     background: linear-gradient(
         180deg,
@@ -51,25 +50,44 @@ body {
     height: 100vh;
     width: 100vw;
     overflow: hidden;
-    user-select: none;
 
     #scroll-container {
         display: flex;
 
+        background: repeating-linear-gradient(
+            transparent,
+            transparent variables.$lineSpace,
+            #f0f2f5 variables.$lineSpace,
+            #f0f2f5 calc(variables.$lineSpace + 1px)
+        );
+
         .content-item {
-            padding: 150px 30px 0;
             height: 100vh; /* Optional: Full viewport height */
             white-space: nowrap;
         }
-
         .instruments {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between; // Spreads items evenly with equal spacing
-            align-items: flex-start; // Aligns words to the left
             min-width: 90vw;
+            max-width: 100vw;
             position: relative; // To position pseudo-elements inside
-            padding-left: 1rem;
+            padding-left: 30vw;
+            > span {
+                display: flex;
+                span {
+                    display: block;
+                    width: 50px;
+                    height: calc(variables.$lineSpace + 1px);
+                    font-size: 14px;
+                    line-height: variables.$lineSpace;
+                    font-weight: 200;
+                }
+
+                span.name {
+                    display: inline-block;
+                    padding-left: 150px;
+                    font-size: 18px;
+                    font-weight: 400;
+                }
+            }
         }
     }
 }
@@ -79,9 +97,9 @@ body {
     font-size: 1.15em;
     > div {
         padding-top: 20vh;
-        padding-left: 10vw;
+        padding-left: 20vw;
         > div {
-            padding: 20px 30px 0;
+            padding: 20px 30px 0 0;
 
             &.r42 {
                 margin-top: 40px;
