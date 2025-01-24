@@ -26,7 +26,7 @@ const NUM_LINES = 20; // Number of lines
 
 const dotRadius = 2;
 const xStep = 1;
-const endPoint = 0.75;
+const endPoint = 0.95;
 const fadeInSpace = 0.05; // last 10% of data is faded
 
 // Initialize data containers
