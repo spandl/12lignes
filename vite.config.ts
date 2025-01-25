@@ -18,6 +18,13 @@ export default defineConfig({
         },
         target: 'esnext', // Use 'esnext' for modern syntax, but ensure compatibility
     },
+    css: {
+        preprocessorOptions: {
+            scss: {
+                // Add SCSS options here if necessary
+            },
+        },
+    },
     plugins: [
         viteStaticCopy({
             targets: [
