@@ -31,6 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const audioVisualization = document.getElementById("audio-visualization")!;
 
     initViz(audioVisualization);  // Initializes the canvas
+    window.addEventListener('resize', () => {
+        initViz(audioVisualization);  // Reinitialize the canvas on resize
+      });
 
     let isDragging = false;
     let isPlaying = false;
@@ -94,8 +97,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 audioElement
             );
 
-            const { loudness, timeDomain } = audioData; // time, frequencyDomain
-            updateViz(audioVisualization, { loudness, timeDomain });
+            const { loudness, timeDomain, time } = audioData; // time, frequencyDomain
+            updateViz(audioVisualization, { loudness, timeDomain, time });
 
             lastUpdate = timestamp;
         }
@@ -108,12 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Sync scrollbar with audio playback
     audioElement.addEventListener("timeupdate", () => {
         updateScrollbar();
-        // const currentTime = audioElement.currentTime;
-        // console.log('timeupdate', currentTime)
-
-
-
-
     });
 
     // Drag-and-drop functionality for the scrollbar thumb
@@ -124,9 +121,4 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener("mouseup", () => {
         isDragging = false;
     });
-});
-
-const normalizedTimeDomainArray = (timeDomainArray) => timeDomainArray.map((value, index) => {
-    const normalized = (value - 128) / 128;
-    return normalized;
 });

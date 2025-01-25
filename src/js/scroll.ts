@@ -16,7 +16,7 @@ const initScroll = () => {
 
     const sections = gsap.utils.toArray(".content-item");
 
-    let scrollTween = gsap.to(sections, {
+    gsap.to(sections, {
         x: -(containerWidth - sectionWidth),
         ease: "none",
         scrollTrigger: {
@@ -27,30 +27,6 @@ const initScroll = () => {
             // markers: true,
         }
     });
-
-    // Image parallax
-
-    // gsap.set(".image", { x: 500 });
-
-    // // Parallax animation for the image (faster than the scrollTween)
-    // sections.forEach((panel: HTMLElement) => {
-    //     const image = panel.querySelector(".image");
-    //     if (image) {
-    //         gsap.to(image, {
-    //             x: -10, // Adjust this value to control the parallax speed
-    //             ease: "easeInOut",
-    //             scrollTrigger: {
-    //                 trigger: panel,
-    //                 containerAnimation: scrollTween,
-    //                 scrub: true,
-    //                 start: "left center",
-    //                 end: "right center",
-    //                 id: `parallax-${panel.classList[0]}`,
-    //                 markers: true,
-    //             },
-    //         });
-    //     }
-    // });
 
     gsap.to("#scrollbar-container", {
         scrollTrigger: {
@@ -65,14 +41,6 @@ const initScroll = () => {
         },
     });
 }
-
-
-
-
-
-
-
-
 
 document.addEventListener('DOMContentLoaded', () => {
     initScroll();

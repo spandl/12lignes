@@ -3,7 +3,8 @@ import p5 from 'p5';
 
 interface IAudioData {
     loudness: number,
-    timeDomain: Uint8Array
+    timeDomain: Uint8Array,
+    time: number
 }
 
 type TLineData = ILineDataPoint[][]
@@ -11,23 +12,15 @@ type TLineData = ILineDataPoint[][]
 interface ILineDataPoint {
     x: number,
     y: number,
-    r: number
+    r: number,
+    time: number
 }
 
-/* 
-TODO > minor updates
-* resize event listener
-* Change color from outside
-* Remove empty bin at bottom
-* Performance
-*/
-
-const NUM_LINES = 20; // Number of lines
-
-const dotRadius = 2;
+const lineCount = 20; // Number of lines
+const largeDotDuration = 3;
 const xStep = 1;
 const endPoint = 0.95;
-const fadeInSpace = 0.05; // last 10% of data is faded
+const fadeInSpace = 0.05; // last 5% of data is faded
 
 // Initialize data containers
 const sketchContainer = document.getElementById('audio-visualization')
@@ -35,46 +28,48 @@ let linesData: TLineData = [[]];
 
 const binGenerator = d3
     .bin()
-    .thresholds(NUM_LINES);
+    .thresholds(lineCount);
 
 let yScale: d3.ScaleLinear<number, number, never>;
 
-
-
 // Function to process the audio data and update linesData
 export const updateViz = (container: HTMLElement, audioData: IAudioData): void => {
-    const { loudness, timeDomain } = audioData;
+    const { loudness, timeDomain, time } = audioData;
     const { width } = container.getBoundingClientRect();
     const { loudnessScale } = refreshViz(width)
-
 
     const vizWidth = width * endPoint;
     const bins = binGenerator(timeDomain);
 
     // Drawing based on bin data
     bins.forEach((bin, lineIndex) => {
-        const average = d3.mean(bin) ?? 0;
-        const y = yScale(average);
+        delete bin.x0;
+        delete bin.x1;
 
-        if (!linesData[lineIndex]) linesData[lineIndex] = [];
-
-        linesData[lineIndex].push({
-            x: xStep * linesData[lineIndex].length,
-            y,
-            r: loudnessScale(loudness),
-        });
-
-        const newLength = linesData[lineIndex].length
-        if (newLength > vizWidth) {
-            linesData[lineIndex].splice(0, newLength - vizWidth);
-        }
+        const average = d3.mean(bin) ?? 128;
+            const y = yScale(average);
+            
+            if (!linesData[lineIndex]) linesData[lineIndex] = [];
+            
+            linesData[lineIndex].push({
+                x: xStep * linesData[lineIndex].length,
+                y,
+                r: loudnessScale(loudness),
+                time
+            });
+            
+            const newLength = linesData[lineIndex].length
+            if (newLength > vizWidth) {
+                linesData[lineIndex].splice(0, newLength - vizWidth);
+            }
+        
     });
 }
-
 
 export const initViz = (container: HTMLElement) => {
     const { width, height } = container.getBoundingClientRect();
     const { opacityScale } = refreshViz(width)
+    console.log('initViz')
     const backColor = 'rgba(255, 255, 255, 0)';
 
     yScale = d3
@@ -111,7 +106,8 @@ export const initViz = (container: HTMLElement) => {
 
                     const x = position - width / 2;
                     const y = point.y - height / 2;
-                    const radius = point.r;
+                    const radiusMultiplier = point.time < largeDotDuration ? dotMultiplier(point.time) : 1;
+                    const radius = point.r * radiusMultiplier;
                     sketch.circle(x, y, radius);
                 });
             }
@@ -119,8 +115,11 @@ export const initViz = (container: HTMLElement) => {
     }, sketchContainer);
 }
 
-export const refreshViz = (width) => {
+const dotMultiplier = (time: number) => {
+    return (largeDotDuration - time) * 2;
+}
 
+export const refreshViz = (width: number) => {
     const animationWidth = endPoint * width;
     const fadeStart = animationWidth - animationWidth * fadeInSpace;
     const dotOpacity = 0.25
@@ -138,12 +137,5 @@ export const refreshViz = (width) => {
         .range([1, 6])
         .clamp(true);
 
-    const a = opacityScale(10);
-    const b = opacityScale(100);
-    const c = opacityScale(490);
-    const d = opacityScale(520);
-    return { opacityScale, loudnessScale }
-
+    return { opacityScale, loudnessScale };
 }
-
-
