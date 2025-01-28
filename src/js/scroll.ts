@@ -42,6 +42,6 @@ const initScroll = () => {
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('load', () => {
     initScroll();
 });
