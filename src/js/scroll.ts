@@ -1,5 +1,5 @@
-import gsap from 'gsap';
-import ScrollTrigger from 'gsap/ScrollTrigger';
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 import '../css/audio.scss';
 import '../css/structure.scss';
