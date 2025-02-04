@@ -13,7 +13,13 @@ export default defineConfig({
                 test: './src/scroll-test.html',
             },
             output: {
-                assetFileNames: 'css/[name][extname]', // .[hash] Output CSS in /css directory
+                assetFileNames: (assetInfo) => {
+                    const fileName = assetInfo.names[0] as string; // Type assertion to avoid TS error
+                    if (/\.(png|jpe?g|gif|svg|webp|avif)$/.test(fileName)) {
+                        return 'images/[name][extname]'; // Images go to /images
+                    }
+                    return 'css/[name][extname]'; // CSS stays in /css
+                },
             },
         },
         target: 'esnext', // Use 'esnext' for modern syntax, but ensure compatibility
@@ -32,6 +38,7 @@ export default defineConfig({
                     src: 'audio/**/*.{wav,mp3}',
                     dest: 'audio',
                 },
+                { src: 'images/**/*.{png,jpg,jpeg,gif,svg,webp,avif}', dest: 'images' },
             ],
         }),
     ],
